@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light" data-size="m" data-anim="on">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Свод правил военно-политического RP</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230067c0'/%3E%3Cpath d='M32 12l18 7v14c0 11-8 19-18 23-10-4-18-12-18-23V19z' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+:root{--bg1:#dfe9f6;--bg2:#f3f3f3;--bg3:#efe6f2;--layer:rgba(255,255,255,.62);--solid:#fdfdfd;--stroke:#dcdcdc;--ink:#1a1a1a;--mu:#5f5f5f;--ac:#0067c0;--act:#fff;--ax:#0067c0;--hover:rgba(0,0,0,.05);--press:rgba(0,0,0,.09);--bad:#c42b1c;--good:#0f7b0f;--sh:0 2px 6px rgba(0,0,0,.09);--fs:15px;--f:"Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;--fd:"Segoe UI Variable Display","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;--ease:cubic-bezier(.2,.8,.2,1);color-scheme:light}
+@supports (color:AccentColor){:root{--ac:AccentColor;--act:AccentColorText}}
+html[data-theme=dark]{--bg1:#1b2a40;--bg2:#202020;--bg3:#2b2032;--layer:rgba(60,60,60,.42);--solid:#2d2d2d;--stroke:#464646;--ink:#fff;--mu:#c8c8c8;--ax:#60cdff;--hover:rgba(255,255,255,.07);--press:rgba(255,255,255,.11);--bad:#ff99a4;--good:#6ccb5f;--sh:0 2px 8px rgba(0,0,0,.4);color-scheme:dark}
+html[data-size=l]{--fs:17px}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0}
+body{background:linear-gradient(135deg,var(--bg1),var(--bg2) 50%,var(--bg3)) fixed;color:var(--ink);font:var(--fs)/1.55 var(--f);overflow:hidden}
+:focus-visible{outline:2px solid var(--ax);outline-offset:2px}
+svg{fill:currentColor}
+h1,h2,h3{font-family:var(--fd);margin:0}
+p{margin:6px 0}
+.sub{color:var(--mu);font-size:.88em}
+/* кнопки и анимации */
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:32px;padding:5px 16px;border:1px solid var(--stroke);border-radius:4px;background:var(--solid);color:var(--ink);font:inherit;cursor:pointer;transition:box-shadow .15s,transform .12s var(--ease),filter .15s,border-color .15s}
+.btn:hover{box-shadow:inset 0 0 0 100px var(--hover)}
+.btn:active{transform:scale(.97);box-shadow:inset 0 0 0 100px var(--press)}
+.btn.p{background:var(--ac);color:var(--act);border-color:transparent}
+.btn.p:hover{box-shadow:none;filter:brightness(1.1)}
+.btn.p:active{filter:brightness(.9)}
+.btn.p::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.38) 50%,transparent 70%);transform:translateX(-130%)}
+.btn.p:hover::before{transform:translateX(130%);transition:transform .7s var(--ease)}
+.btn.t{border-color:transparent;background:none;color:var(--ax)}
+.btn.d:hover{color:var(--bad)}
+.btn.wide{width:100%;margin-top:6px}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.rip{position:absolute;border-radius:50%;background:currentColor;opacity:.2;pointer-events:none;transform:scale(0);animation:rip .6s ease-out forwards}
+@keyframes rip{to{transform:scale(1);opacity:0}}
+.seg{display:inline-flex;background:var(--hover);border-radius:6px;padding:3px;gap:2px}
+.seg button{position:relative;overflow:hidden;border:0;background:none;color:var(--ink);padding:5px 16px;border-radius:4px;font:inherit;cursor:pointer;transition:background .18s,box-shadow .18s,transform .12s var(--ease)}
+.seg button:hover{background:var(--hover)}
+.seg button:active{transform:scale(.96)}
+.seg button.on{background:var(--solid);box-shadow:0 1px 3px rgba(0,0,0,.18)}
+/* поля */
+.fld{display:flex;flex-direction:column;gap:5px;margin:0 0 12px;font-size:.87em;color:var(--mu)}
+input,select{min-height:32px;padding:5px 10px;border:1px solid var(--stroke);border-bottom-color:var(--mu);border-radius:4px;background:var(--solid);color:var(--ink);font:inherit;min-width:0;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus{outline:0;border-bottom-color:var(--ac);box-shadow:0 1px 0 var(--ac)}
+input[type=search]{border-radius:16px;padding:5px 14px;width:260px}
+.pw{display:flex;gap:6px}.pw input{flex:1}
+.err{min-height:1.3em;margin:8px 0 0;color:var(--bad);font-size:.9em}
+/* вход */
+.screen{position:fixed;inset:0;display:grid;place-items:center;padding:16px;overflow:auto}
+.lcard{width:min(420px,100%);padding:30px 30px 22px;border:1px solid var(--stroke);border-radius:12px;background:var(--layer);backdrop-filter:blur(28px) saturate(1.4);box-shadow:0 16px 48px rgba(0,0,0,.18);animation:pop .45s var(--ease)}
+.lcard.shake{animation:shake .4s}
+.lcard h1{font-size:1.6em;margin:14px 0 2px}
+.lcard>.btn.t{padding-left:0}
+.lcard .seg{margin:14px 0 18px}
+.logo{width:34px;height:34px;display:grid;place-items:center;border-radius:9px;background:var(--ac);color:var(--act)}
+.logo svg{width:20px;height:20px}
+.lcard .logo{width:48px;height:48px;border-radius:12px}.lcard .logo svg{width:28px;height:28px}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.97)}}
+@keyframes shake{20%{transform:translateX(-8px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
+/* окно приложения */
+#app{display:grid;grid-template-columns:276px minmax(0,1fr);height:100vh}
+.pane{display:flex;flex-direction:column;gap:2px;padding:10px 10px 12px;overflow:auto}
+.brand{display:flex;align-items:center;gap:11px;padding:8px 10px 16px;font:600 1em var(--fd);line-height:1.25}
+.brand small{display:block;font:400 .8em var(--f);color:var(--mu)}
+.nav-i{position:relative;overflow:hidden;display:flex;align-items:center;gap:13px;min-height:40px;padding:0 12px;border:0;border-radius:6px;background:none;color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:background .15s,transform .12s var(--ease)}
+.nav-i:hover{background:var(--hover)}
+.nav-i:active{background:var(--press);transform:scale(.98)}
+.nav-i.on{background:var(--hover)}
+.nav-i::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:2px;background:var(--ac);transform:scaleY(0);transition:transform .25s var(--ease)}
+.nav-i.on::before{transform:scaleY(1)}
+.nav-i svg{width:18px;height:18px;flex:none;fill:currentColor;transition:transform .2s var(--ease)}
+.nav-i:hover svg{transform:scale(1.12)}
+.sp{flex:1}
+.content{display:flex;flex-direction:column;min-width:0;height:100vh;border:1px solid var(--stroke);border-right:0;border-bottom:0;border-top-left-radius:9px;background:var(--layer);backdrop-filter:blur(20px)}
+.top{display:flex;align-items:center;gap:16px;padding:16px 32px 8px}
+.top h1{font-size:1.75em;font-weight:600;flex:1}
+.view{flex:1;overflow:auto;padding:6px 32px 56px;scroll-behavior:smooth}
+.in{max-width:1080px;margin:0 auto;animation:enter .28s var(--ease)}
+@keyframes enter{from{opacity:0;transform:translateY(10px)}}
+.card{padding:16px 20px;margin:0 0 14px;border:1px solid var(--stroke);border-radius:8px;background:var(--solid);box-shadow:var(--sh)}
+.card0{padding:0;overflow:hidden}
+.h3{font-size:1.1em;font-weight:600;margin:20px 0 8px}
+.card .h3{margin-top:0}
+.hello h2{font-size:1.5em;font-weight:600}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:16px 0 8px}
+.tile{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:16px 18px;border:1px solid var(--stroke);border-radius:8px;background:var(--solid);color:var(--ink);font:inherit;text-align:left;cursor:pointer;box-shadow:var(--sh);transition:transform .2s var(--ease),box-shadow .2s,border-color .2s}
+.tile svg{width:24px;height:24px;fill:var(--ax);margin-bottom:6px;transition:transform .25s var(--ease)}
+.tile b{font:600 1.05em var(--fd)}.tile span{color:var(--mu);font-size:.88em}
+.tile:hover{transform:translateY(-3px);border-color:var(--ac);box-shadow:0 8px 20px rgba(0,0,0,.14)}
+.tile:hover svg{transform:scale(1.15) rotate(-4deg)}
+.tile:active{transform:scale(.98)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.bar.end{justify-content:flex-end;margin-bottom:0}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}.row .fld{margin:0}
+.acts{white-space:nowrap;text-align:right}
+.empty{padding:22px;text-align:center;color:var(--mu)}
+.tw{overflow-x:auto;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:.93em;font-variant-numeric:tabular-nums}
+th,td{padding:8px 14px;border-bottom:1px solid var(--stroke);text-align:left}
+tr:last-child td{border-bottom:0}
+th{background:var(--hover);font-weight:600;color:var(--mu);font-size:.88em}
+.card0 tr:hover td{background:var(--hover)}
+.hd td{background:var(--hover);font-weight:600;color:var(--ax)}
+.seg2{display:flex;flex-wrap:wrap;gap:24px 40px}
+.seg2>div{display:flex;flex-direction:column;gap:6px}
+.set{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--stroke)}
+.set:last-child{border-bottom:0}
+/* правила */
+.rules{display:grid;grid-template-columns:230px minmax(0,1fr);gap:28px}
+#toc{position:sticky;top:0;align-self:start;max-height:calc(100vh - 130px);overflow:auto;font-size:.88em;padding-bottom:20px}
+#toc a{display:block;padding:3px 8px;border-radius:4px;color:var(--mu);text-decoration:none;cursor:pointer;transition:background .15s,color .15s}
+#toc a:hover{background:var(--hover);color:var(--ink)}
+#toc a.tp{margin-top:12px;font:600 1.02em var(--fd);color:var(--ink)}
+#toc a.tp b{display:inline-block;min-width:32px;color:var(--ax)}
+.rules h2{margin:30px 0 4px;display:flex;align-items:baseline;gap:14px;font-size:1.5em;font-weight:600}
+.rules h2:first-of-type{margin-top:6px}
+.rules h2 b{min-width:46px;color:var(--ax);font-size:1.2em}
+.sec{display:grid;grid-template-columns:54px minmax(0,1fr);gap:0 14px;padding:14px 0 12px;border-top:1px solid var(--stroke);scroll-margin-top:8px}
+.num{font:600 1.7em/1.1 var(--fd);color:var(--ax);text-align:right}
+.sec h3{font-size:1.15em;font-weight:600;margin-bottom:4px}
+.sec h4{margin:12px 0 2px;font-size:.9em;color:var(--ax)}
+ul{margin:4px 0 8px;padding-left:20px}li{margin:2px 0}li::marker{color:var(--ax)}
+mark{background:rgba(255,185,0,.4);color:inherit;border-radius:2px}
+.end{margin-top:36px;text-align:center;color:var(--mu)}
+/* калькуляторы */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.grid .fld{margin:0}
+label.ck{flex-direction:row;align-items:center;gap:8px;color:var(--ink);padding-top:20px}
+input[type=checkbox]{min-height:0;width:18px;height:18px;accent-color:var(--ac)}
+.out{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-top:14px;border-left:3px solid var(--ac)}
+.out div{padding:4px 16px}
+.out span{display:block;font-size:.85em;color:var(--mu)}
+.out b{font:600 1.35em var(--fd)}
+.bad{color:var(--bad)}.good{color:var(--good)}
+td input{width:84px}
+/* диалог и уведомление */
+dialog{width:min(460px,92vw);padding:24px;border:1px solid var(--stroke);border-radius:8px;background:var(--solid);color:var(--ink);box-shadow:0 20px 56px rgba(0,0,0,.32)}
+dialog[open]{animation:pop .24s var(--ease)}
+dialog::backdrop{background:rgba(0,0,0,.32);animation:fade .2s}
+@keyframes fade{from{opacity:0}}
+#toast{position:fixed;left:50%;bottom:28px;z-index:9;padding:10px 20px;border:1px solid var(--stroke);border-radius:8px;background:var(--solid);box-shadow:0 8px 24px rgba(0,0,0,.25);opacity:0;transform:translate(-50%,16px);pointer-events:none;transition:opacity .22s,transform .3s var(--ease)}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:1100px){.rules{grid-template-columns:minmax(0,1fr)}#toc{display:none}}
+@media(max-width:860px){#app{grid-template-columns:58px minmax(0,1fr)}.nav-i span,.brand div{display:none}.nav-i{justify-content:center;padding:0}.brand{justify-content:center;padding:8px 0 14px}.top,.view{padding-left:16px;padding-right:16px}input[type=search]{width:150px}.sec{grid-template-columns:38px minmax(0,1fr)}}
+html[data-anim=off] *,html[data-anim=off] *::before,html[data-anim=off] *::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div id="login" class="screen">
+ <div class="lcard" id="lcard">
+  <div class="logo" id="llogo"></div>
+  <h1>Вход в систему</h1>
+  <p class="sub">Свод правил военно-политического RP, 2014 год</p>
+  <div class="seg" id="lseg"><button type="button" data-m="state" class="on">Государство</button><button type="button" data-m="admin">Администрация</button></div>
+  <div id="lform"></div>
+  <p class="err" id="lerr" role="alert"></p>
+  <button type="button" class="btn t" data-act="imp">Загрузить список государств</button>
+ </div>
+</div>
+<div id="app" hidden>
+ <nav class="pane" id="pane"></nav>
+ <section class="content">
+  <header class="top"><h1 id="ttl"></h1><input id="q" type="search" placeholder="Поиск по правилам" autocomplete="off" aria-label="Поиск по правилам"></header>
+  <div class="view" id="view"></div>
+ </section>
+</div>
+<dialog id="dlg"></dialog>
+<input type="file" id="imp" accept=".json,application/json" hidden>
+<div id="toast" role="status"></div>
+<script>
+const T=(...r)=>({t:r});
+/* Раздел: [номер, заголовок, ...блоки]. Блок: строка (абзац; на ":" заканчивается — подзаголовок), массив (список), T(...) (таблица) */
+const P=[
+{r:'I',t:'Общие положения',s:[
+[1,'Основные правила',['На сервере действуют стандартные правила Military RP.','Запрещены NonRP, PowerGaming, MetaGaming и злоупотребление игровыми механиками.','Весь игровой сеттинг соответствует 2014 году.','Техника, вооружение, оборудование и технологии должны соответствовать указанной эпохе.','Каждая страна обязана вести государственный финансовый и военный баланс.','Все крупные политические и экономические действия регистрируются.','Администрация имеет право отменять операции, совершённые с целью обхода правил.','Игроки обязаны соблюдать заключённые международные договоры.']],
+[2,'Государства','Каждое государство обладает:',['Собственным денежным балансом.','Национальной валютой.','Правительством и главой государства.','Политической системой.','Вооружёнными силами.','Промышленностью.','Дипломатическими отношениями.','Территорией и инфраструктурой.'],'Количество государств не ограничено, однако регистрация нового государства производится через администрацию.']
+]},
+{r:'II',t:'Экономика и валюты',s:[
+[3,'Международная валюта','Основная расчётная единица сервера — Лыстык.',['Все экономические операции производятся в Лыстыках. Национальные валюты используются для отображения стоимости в зависимости от выбранной страны.']],
+[4,'Официальный валютный курс',T(['Валюта','Курс за 1 Лыстык'],['Доллар США','15 $'],['Евро','12 €'],['Российский рубль','1 500 ₽']),['Курс является фиксированным и одинаковым для всех государств.','Самостоятельно изменять курс, создавать валютную прибыль посредством обмена или проводить операции по неофициальному курсу запрещено.','При добавлении другой национальной валюты курс устанавливается администрацией.']],
+[5,'Стартовый капитал','Каждое зарегистрированное государство получает: 1 000 000 Лыстыков.','Эквивалент:',['США — 15 000 000 $.','Европейский союз — 12 000 000 €.','Россия — 1 500 000 000 ₽.'],'Все государства начинают с одинаковой покупательской способностью.'],
+[6,'Государственный доход','Каждый час государство получает: 10 000 Лыстыков.','В национальной валюте:',['США — 150 000 $.','ЕС — 120 000 €.','Россия — 15 000 000 ₽.'],'Правила начисления:',['Выплата производится один раз за полный игровой час.','Страна должна иметь активный статус в RP.','Офлайн-выплаты не накапливаются.','Пропущенные начисления не компенсируются.','Доход не может увеличиваться посредством дополнительных аккаунтов.','Все выплаты регистрируются в финансовом журнале.']],
+[7,'Государственная казна','У каждого государства имеется единая казна.']
+]},
+{r:'III',t:'Промышленность',s:[
+[8,'Предприятия','Предприятия обеспечивают государство дополнительным доходом. Все суммы представлены в Лыстыках.',T(['Предприятие','Цена строительства','Доход/час','Содержание/час','Чистый доход/час'],['Отраслевая фабрика','100 000','1 000','100','+900'],['Гражданский завод','175 000','1 500','150','+1 350'],['НПЗ','250 000','2 000','200','+1 800'],['Военный завод','350 000','0','1 000','−1 000'])],
+[9,'Ограничения промышленности',['Максимум 3 отраслевые фабрики на государство.','Максимум 3 гражданских завода.','Максимум 3 НПЗ.','Максимум 1 военный завод.','Максимум одно новое предприятие за 6 часов.','Покупка предприятия немедленно списывает его стоимость.','Предприятие должно быть зарегистрировано в государственном балансе.','Продажа, передача и уничтожение предприятий требуют регистрации.','Военный завод не приносит обычной прибыли, но разрешает производство военной техники.']],
+[10,'Доход во время войны',['Базовый государственный доход сохраняется.','Доход предприятий сохраняется.','Содержание предприятий продолжает списываться.','Уничтоженные предприятия прекращают приносить доход.','Оккупированные предприятия временно не приносят доход прежнему владельцу.','Переход предприятия к новому владельцу осуществляется только по мирному договору либо официальному решению администрации.','Объявление войны само по себе не замораживает экономику.']]
+]},
+{r:'IV',t:'Военный бюджет и техника',s:[
+[11,'Общие правила закупок',['Закупка и производство используют единый лимит.','Лимит устанавливается на государство, а не на отдельного игрока.','Учитываются покупки, производство и импорт.','Все суммы списываются из казны.','Любая полученная техника добавляется в государственный баланс.','Потерянная или уничтоженная техника безвозвратно удаляется из баланса.','Повторно засчитывать потерянную технику запрещено.','Передача техники не возвращает отправителю использованный лимит.','Импортируемая техника учитывается в лимите получателя.','Все действия фиксируются в журнале.']],
+[12,'Стоимость военной техники','Все цены в Лыстыках.',T(['Техника','Цена'],['Лёгкий танк','80 000'],['Средний танк (ОБТ)','300 000'],['Тяжёлый танк','450 000'],['БМП','75 000'],['БТР','60 000'],['САУ','85 000'],['Артиллерия','45 000'],['РСЗО','130 000'],['Вертолёт гражданский/грузовой','100 000'],['Вертолёт военный','400 000'],['Самолёт гражданский/грузовой','125 000'],['Самолёт военный','550 000'])],
+[13,'Лимиты закупок',T(['Категория','Лимит'],['Все танки вместе','5'],['В том числе тяжёлые танки','2'],['В том числе средние танки (ОБТ)','3'],['БМП','3'],['БТР','6'],['САУ','2'],['Артиллерия','4'],['РСЗО','1'],['Все вертолёты вместе','1'],['Все самолёты вместе','1']),'Дополнительные ограничения по классам танков действуют внутри общего лимита в 5 единиц.','Например, нельзя купить 5 лёгких, 3 средних и 2 тяжёлых танка за один шестичасовой период.'],
+[14,'Пехотное оборудование',T(['Оборудование','Цена'],['ПТУР','4 500'],['Разведывательный дрон','12 000'],['Разведывательный FPV-дрон','2 000'],['Миномёт','5 000'],['Военный грузовой транспорт','25 000'],['Мотоцикл','6 000']),'Ограничения:',['ПТУР — максимум 20 за 6 часов.','Разведывательные дроны — максимум 5 за 6 часов.','FPV-дроны — максимум 5 на одну сторону за бой.','Миномёты — максимум 10 за 6 часов.','Грузовой транспорт — максимум 10 за 6 часов.','Мотоциклы — максимум 10 за 6 часов.']],
+[15,'Производство',['Для производства военной техники требуется военный завод.','Производство использует те же лимиты, что и обычная закупка.','Стоимость производства списывается в момент регистрации заказа.','Нельзя одновременно произвести и купить технику сверх установленного лимита.','Нельзя использовать производство для обхода лимитов.','Производство должно соответствовать игровому сеттингу.']]
+]},
+{r:'V',t:'Содержание вооружённых сил',s:[
+[16,'Обслуживание техники','Каждая страна обязана оплачивать обслуживание зарегистрированной техники.','Расход рассчитывается от стоимости техники за каждые 24 часа.',T(['Категория','Доля стоимости'],['Военная бронетехника','0,25%'],['Военная авиация','0,25%'],['Гражданская техника','0,10%'],['Пехотное оборудование','0,05%']),'Во время войны содержание военной техники увеличивается в 1,5 раза.','Пример: средний танк стоимостью 300 000 Лыстыков.',['Мирное время — 750 Лыстыков в сутки.','Военное время — 1 125 Лыстыков в сутки.']],
+[17,'Задолженность','Если государству не хватает средств для содержания армии:',['Неоплаченные расходы записываются в задолженность.','Новые закупки блокируются при наличии просроченной задолженности.','Государство может погасить долг из казны или получить добровольный кредит.','Автоудаление техники за задолженность запрещено.','Решение о приостановке эксплуатации техники принимает администрация по согласованию с RP-правилами.']]
+]},
+{r:'VI',t:'Политическая система',s:[
+[18,'Государственное устройство','Каждое государство должно иметь:',['Название.','Главу государства.','Правительство.','Форму правления.','Национальную валюту.','Политическое направление.'],'Варианты государственного устройства:',T(['Форма','Описание'],['Президентская республика','Президент является главой государства'],['Парламентская республика','Основные решения принимает парламент'],['Конституционная монархия','Монарх действует в рамках конституции'],['Абсолютная монархия','Основная власть сосредоточена у монарха'],['Федерация','Государство состоит из субъектов'],['Союз государств','Несколько государств объединены договором'],['Военное правительство','Государством руководит военная администрация']),'Форма правления сама по себе не даёт экономических или военных бонусов.'],
+[19,'Политические партии',['Государство может иметь несколько политических партий.','Каждая партия должна иметь название и программу.','Партии могут участвовать в выборах.','Результаты выборов фиксируются администрацией.','Смена правительства регистрируется в политическом архиве.','Политические партии не могут самостоятельно создавать дополнительные денежные средства или вооружение.']],
+[20,'Государственная стабильность','Каждому государству присваивается показатель стабильности от 0 до 100.',T(['Показатель','Состояние'],['80–100','Стабильность'],['60–79','Устойчивое положение'],['40–59','Политическая напряжённость'],['20–39','Политический кризис'],['0–19','Критический кризис']),'Стабильность является RP-показателем.']
+]},
+{r:'VII',t:'Дипломатия',s:[
+[21,'Международные отношения','Каждое государство имеет индивидуальные отношения с другими государствами.','Доступные статусы:',['Нейтралитет','Обычные отношения','Дружба','Дружественные отношения','Союз','Военное или политическое объединение','Пакт о ненападении','Запрет начинать войну','Торговое сотрудничество','Разрешённые торговые отношения','Напряжённость','Дипломатические разногласия','Санкции','Экономические ограничения','Война','Официальный конфликт','Перемирие','Временное прекращение боевых действий','Мир','Конфликт официально завершён'],'Статусы применяются отдельно к каждой паре государств.'],
+[22,'Международные договоры','Разрешены следующие договоры:',['Договор о дружбе.','Военный союз.','Пакт о ненападении.','Договор о взаимной торговле.','Экономический союз.','Договор о нейтралитете.','Договор о взаимопомощи.','Соглашение о прекращении санкций.','Договор о передаче территории.','Мирный договор.'],'Каждый договор должен содержать:',['Участников.','Дату заключения.','Срок действия.','Условия.','Подписи или подтверждения участников.'],'Нельзя изменять условия договора задним числом.']
+]},
+{r:'VIII',t:'Войны и военные конфликты',s:[
+['','Объявление войны',['Объявить войну может глава государства или уполномоченное правительство.'],'Для регистрации войны необходимо указать:',['Государство-инициатор.','Государство-противник.','Причину конфликта.','Дату начала.','Участников.','Официальный статус войны.'],['Война начинает действовать после подтверждения администрацией.','Одна страна может одновременно участвовать максимум в двух официальных конфликтах.']],
+['','Участники войны','В войне могут участвовать:',['Инициатор конфликта.','Государство-противник.','Официальные союзники.','Государства, вступившие в конфликт позднее.'],['Вступление нового участника обязательно регистрируется.','Союз автоматически не означает вступление в войну: участие должно быть подтверждено государством и администрацией.']],
+['','Экономика во время войны',['Государства продолжают получать базовый доход.','Заводы продолжают работать.','Содержание военной техники увеличивается в 1,5 раза.','Военная техника после уничтожения списывается.','Экономические сделки продолжают регистрироваться.','Захваченные предприятия не переходят в собственность автоматически.','Оккупированные предприятия временно прекращают приносить доход первоначальному владельцу.']],
+['','Перемирие','Перемирие является временным соглашением о прекращении конфликта.','Условия:',['Требуется согласие обеих сторон.','Продолжительность — минимум 6 реальных часов, если администрация не разрешила иное.','Условия фиксируются в архиве.','Перемирие не считается окончательным миром.','После окончания перемирия конфликт может продолжиться, если мирный договор не был подписан.']],
+['','Мирный договор','Мирный договор завершает войну.','Он может содержать:',['Прекращение военных действий.','Выплату репараций.','Передачу территорий.','Возвращение пленных как RP-механику.','Прекращение санкций.','Восстановление торговли.','Восстановление дипломатических отношений.','Пакт о ненападении.'],['Обе стороны должны согласиться с условиями.','После заключения мира запрещено начинать новый конфликт между теми же государствами в течение 12 реальных часов без разрешения администрации.']],
+['','Репарации','Репарации являются денежной выплатой по условиям мирного соглашения.','Ограничения:',['Максимальный размер — 10% казны государства-плательщика на момент подписания договора.','Нельзя требовать неограниченные выплаты.','Репарации фиксируются отдельной операцией.','Выплата может быть единовременной или разделённой на согласованные части.','Нельзя взыскивать деньги повторно по одному и тому же условию.']]
+]},
+{r:'IX',t:'Торговля и кредиты',s:[
+['','Международная торговля','Возможные категории товаров:',['Нефть и топливо.','Металлы.','Продовольствие.','Промышленные материалы.','Гражданская техника.','Военные товары.','Электроника.'],'Каждая сделка должна содержать:',['Продавца.','Покупателя.','Товар.','Количество.','Стоимость.','Срок выполнения.','Условия поставки.'],['Торговля не создаёт бесплатные деньги.'],'Покупатель оплачивает сделку, продавец получает соответствующую сумму. Все платежи производятся в Лыстыках.','До введения отдельного реестра запасов цены и доступность ресурсов утверждаются администрацией.'],
+['','Государственные кредиты','Кредиты разрешены только между государствами либо у Администрации.','Условия:',['Кредитор добровольно передаёт средства заёмщику.','Размер кредита не может превышать 25% текущей казны кредитора.','Срок кредита — от 1 до 7 реальных суток.','Максимальная согласованная процентная ставка — 5% за весь срок.','Все условия фиксируются в кредитном договоре.','Проценты не могут изменяться задним числом.','Повторный кредит при просроченной задолженности запрещён без разрешения администрации.']],
+['','Санкции и эмбарго','Варианты:',['Полное торговое эмбарго.','Запрет отдельных категорий товаров.','Запрет финансовых переводов.','Приостановка торгового соглашения.','Заморозка новых государственных контрактов между сторонами.'],['Санкции должны иметь дату введения, причину, область действия и срок.','Запрещено задним числом аннулировать уже завершённые сделки.','Санкции не дают права самовольно изымать денежные средства другой страны.']]
+]},
+{r:'X',t:'Территории и оккупация',s:[
+['','Территориальное устройство','Каждое государство может иметь:',['Основную территорию.','Административные регионы.','Экономические центры.','Промышленные районы.','Особые территории.'],'Передача территории оформляется договором или решением администрации в соответствии с RP.'],
+['','Оккупация',['Оккупация должна быть зарегистрирована.','Оккупация не означает автоматического присоединения территории.','До заключения мирного договора территория сохраняет прежнего юридического владельца.','Предприятия на оккупированной территории временно не приносят доход прежнему владельцу.','Передача собственности оформляется отдельно.','Запрещено регистрировать захват одной территории несколькими государствами одновременно.']]
+]},
+{r:'XI',t:'Абьюзы и обход правил',s:[
+['','Запрещённые действия','Запрещается:',['Создавать дополнительные аккаунты ради начисления выплат.','Обходить лимиты посредством союзников.','Проводить фиктивные торговые сделки.','Передавать деньги с последующим скрытым возвратом.','Регистрировать одну технику несколько раз.','Использовать ошибки системы для получения средств.','Удалять операции из государственного баланса.','Подделывать сведения о потерях техники.','Переводить технику через третьи государства для обхода лимитов.','Самостоятельно изменять валютный курс.','Изменять условия уже заключённого договора без согласия сторон.','Создавать фиктивные предприятия ради получения дохода.']],
+['','Международные переводы','Все переводы должны:',['Иметь отправителя.','Иметь получателя.','Содержать сумму.','Иметь причину.','Фиксироваться в журнале.'],'Переводы более 100 000 Лыстыков либо более 10% казны требуют дополнительного подтверждения главы государства или администрации.'],
+['','Исправление ошибок',['История операций не удаляется.','Ошибочная операция исправляется обратной записью.','Любая административная корректировка имеет описание.','Администрация обязана сохранять сведения об изменениях.','При обнаружении злоупотребления может быть произведён откат неправомерной операции.']]
+]},
+{r:'XII',t:'Экономические примеры',s:[
+[39,'Пример промышленного государства','Государство владеет:',['3 отраслевыми фабриками.','3 гражданскими заводами.','3 НПЗ.','1 военным заводом.'],'Расчёт:',T(['Источник','Чистый доход/час'],['Базовые выплаты','+10 000'],['3 отраслевые фабрики','+2 700'],['3 гражданских завода','+4 050'],['3 НПЗ','+5 400'],['1 военный завод','−1 000'],['Общий доход','21 150']),'Итого:',['За час — 21 150 Лыстыков.','За сутки — 507 600 Лыстыков.','За 7 суток — 3 553 200 Лыстыков.'],'Расчёт предполагает 24 начисления в сутки и отсутствие дополнительных расходов на армию.'],
+[40,'Пример стоимости предприятий','Полная стоимость максимального комплекта:',T(['Предприятие','Общая стоимость'],['3 отраслевые фабрики','300 000'],['3 гражданских завода','525 000'],['3 НПЗ','750 000'],['1 военный завод','350 000'],['Итого','1 925 000']),'Максимальный промышленный комплект требует значительных первоначальных вложений и не может быть построен мгновенно из-за строительного лимита.']
+]},
+{r:'XIII',t:'Заключительные положения',s:[
+['','Заключительные положения',['Настоящие правила распространяются на все зарегистрированные государства.','Экономические расчёты производятся в международной валюте.','Изменение правил производится администрацией и публикуется для всех участников.','Новые правила не имеют обратной силы, если администрация отдельно не объявила иное.','Все государства имеют равные стартовые экономические возможности.','Ни одна страна не получает скрытых экономических бонусов.','Военные, политические и экономические действия должны иметь документальную регистрацию.','Спорные ситуации решаются администрацией с учётом истории операций и договоров.','Главная задача системы — обеспечить длительное, сбалансированное и интересное военно-политическое RP.']]
+]}
+];
+
+
+const ADMINS=[{"l": "Tapok", "s": "LSJWeaZWSQ33PAOjludj2A==", "h": "u5CULKfvy2GpIWpNPlirqKWtg1EtnNJIaWskHZFjQYM="}, {"l": "F1F2", "s": "yNroqCN/76xgb7gK5GEAug==", "h": "tzRc3LssA4gBMwUHtn3pAt7z0ISPqh3eualIEwHIgOc="}, {"l": "4uHar1K", "s": "ElmVVxnJJUHxPN529LoP3g==", "h": "NO8AUUQK9e/KnC49sRY8Can4EgI5im3ICN8bc8/Fe7Y="}];
+/* ===== утилиты ===== */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=s=>String(s).trim().toLowerCase().replace(/ё/g,'е').replace(/\s+/g,' ');
+const nf=n=>n.toLocaleString('ru-RU',{maximumFractionDigits:2});
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const ICON={
+ home:'M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z',
+ book:'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13zM8 13h8v2H8zm0 4h8v2H8z',
+ calc:'M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm1 2v4h10V4H7zm0 6v2h2v-2H7zm4 0v2h2v-2h-2zm4 0v2h2v-2h-2zM7 14v2h2v-2H7zm4 0v2h2v-2h-2zm4 0v2h2v-2h-2zM7 18v2h2v-2H7zm4 0v2h2v-2h-2zm4 0v2h2v-2h-2z',
+ flag:'M5 3h2v18H5V3zm3 1h11l-2.5 4L19 12H8V4z',
+ shield:'M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5l8-3z',
+ gear:'M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.48.48 0 0 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z',
+ out:'M10 17l1.4-1.4L8.8 13H20v-2H8.8l2.6-2.6L10 7l-5 5 5 5zM4 5h8V3H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8v-2H4V5z'
+};
+const ic=k=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="${ICON[k]}"/></svg>`;
+let tt;const toast=m=>{const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2800)};
+
+/* ===== настройки ===== */
+let SET={theme:'system',size:'m',anim:true};
+try{Object.assign(SET,JSON.parse(localStorage.getItem('rp.set')||'{}'))}catch(e){}
+function applySet(){
+ const d=document.documentElement,dark=SET.theme==='dark'||(SET.theme==='system'&&matchMedia('(prefers-color-scheme:dark)').matches);
+ d.dataset.theme=dark?'dark':'light';d.dataset.size=SET.size;d.dataset.anim=SET.anim?'on':'off';
+}
+function saveSet(){try{localStorage.setItem('rp.set',JSON.stringify(SET))}catch(e){}applySet()}
+matchMedia('(prefers-color-scheme:dark)').addEventListener('change',applySet);
+
+/* ===== данные государств и пароли ===== */
+const CUR={LYS:['Лыстык','Лыст.',1],USD:['Доллар США','$',15],EUR:['Евро','€',12],RUB:['Российский рубль','₽',1500]};
+const GOV=['Президентская республика','Парламентская республика','Конституционная монархия','Абсолютная монархия','Федерация','Союз государств','Военное правительство'];
+let DB={states:[]};
+try{const d=JSON.parse(localStorage.getItem('rp.v1'));if(d&&Array.isArray(d.states))DB={states:d.states}}catch(e){}
+const save=()=>{try{localStorage.setItem('rp.v1',JSON.stringify(DB))}catch(e){toast('Не удалось сохранить данные')}};
+const enc=new TextEncoder();
+const b64=u=>btoa(String.fromCharCode(...u));
+const unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const newSalt=()=>crypto.getRandomValues(new Uint8Array(16));
+async function hash(pw,salt){
+ const k=await crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveBits']);
+ return b64(new Uint8Array(await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt,iterations:150000},k,256)));
+}
+
+/* ===== вход ===== */
+let S=null,mode='state',fails=0,until=0;
+const locked=()=>{if(Date.now()<until){err(`Слишком много попыток. Подождите ${Math.ceil((until-Date.now())/1000)} с.`);return true}return false};
+function err(m){$('lerr').textContent=m;const c=$('lcard');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake')}
+async function bad(m){fails++;if(fails>=5){until=Date.now()+30000;fails=0}await sleep(450);err(m||'Неверные данные. Проверьте название, правителя и пароль.')}
+const pwf=(id,t)=>`<label class="fld">${t}<div class="pw"><input id="${id}" type="password" autocomplete="off" required><button type="button" class="btn t" data-act="eye" data-for="${id}">Показать</button></div></label>`;
+function loginUI(){
+ document.querySelectorAll('#lseg button').forEach(b=>b.classList.toggle('on',b.dataset.m===mode));
+ $('lerr').textContent='';
+ const f=$('lform');
+ if(!(window.crypto&&crypto.subtle)){f.innerHTML='<p class="bad">Эта среда не поддерживает безопасную проверку паролей. Запустите приложение через RP_Rules.exe или Start.bat.</p>';return}
+ if(mode==='state'){
+  f.innerHTML=`<form id="lf"><label class="fld">Название государства<input id="l_n" maxlength="60" required autofocus></label><label class="fld">Правитель<input id="l_r" maxlength="60" required></label>${pwf('l_p','Пароль')}<button class="btn p wide">Войти</button>${DB.states.length?'':'<p class="sub">Государств пока нет. Администратор должен создать их или передать вам файл списка.</p>'}</form>`;
+  $('lf').onsubmit=async e=>{
+   e.preventDefault();if(locked())return;
+   const n=norm($('l_n').value),r=norm($('l_r').value),p=$('l_p').value,st=DB.states.find(s=>norm(s.name)===n);
+   let ok=false;
+   if(st&&norm(st.ruler)===r)ok=(await hash(p,unb64(st.salt)))===st.hash;else await hash(p,newSalt());
+   ok?start({role:'state',st}):bad();
+  };
+ }else{
+  f.innerHTML=`<form id="lf"><label class="fld">Логин<input id="l_n" maxlength="40" required autofocus></label>${pwf('l_p','Пароль')}<button class="btn p wide">Войти</button></form>`;
+  $('lf').onsubmit=async e=>{
+   e.preventDefault();if(locked())return;
+   const n=norm($('l_n').value),p=$('l_p').value,a=ADMINS.find(x=>norm(x.l)===n);
+   let ok=false;
+   if(a)ok=(await hash(p,unb64(a.s)))===a.h;else await hash(p,newSalt());
+   ok?start({role:'admin',login:a.l}):bad('Неверный логин или пароль.');
+  };
+ }
+}
+function start(s){
+ S=s;fails=0;cur=s.role==='state'?s.st.cur:'LYS';
+ $('login').hidden=true;$('app').hidden=false;buildNav();go('home');
+}
+function logout(){
+ S=null;Q='';$('q').value='';$('view').innerHTML='';$('pane').innerHTML='';
+ $('app').hidden=true;$('login').hidden=false;mode='state';loginUI();
+}
+function buildNav(){
+ const a=S.role==='admin',it=[['home','Главная','home'],['rules','Свод правил','book'],['calc','Калькуляторы','calc'],a?['admin','Администрация','shield']:['me','Моё государство','flag']];
+ $('pane').innerHTML=`<div class="brand"><div class="logo">${ic('shield')}</div><div>Военно-политическое RP<small>${a?'Администратор '+esc(S.login):esc(S.st.name)}</small></div></div>`
+  +it.map(i=>`<button class="nav-i" data-v="${i[0]}">${ic(i[2])}<span>${i[1]}</span></button>`).join('')
+  +`<div class="sp"></div><button class="nav-i" data-v="set">${ic('gear')}<span>Настройки</span></button><button class="nav-i" data-act="out">${ic('out')}<span>Выйти</span></button>`;
+}
+
+/* ===== правила: отрисовка и поиск ===== */
+let Q='';
+const hl=s=>{s=esc(s);return Q?s.replace(new RegExp('('+esc(Q).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>'):s};
+const flat=x=>x[1]+' '+x.slice(2).map(b=>typeof b==='string'?b:Array.isArray(b)?b.join(' '):b.t.map(r=>r.join(' ')).join(' ')).join(' ');
+const blk=b=>typeof b==='string'?(b.endsWith(':')?`<h4>${hl(b)}</h4>`:`<p>${hl(b)}</p>`)
+ :Array.isArray(b)?`<ul>${b.map(i=>`<li>${hl(i)}</li>`).join('')}</ul>`
+ :`<div class="tw card"><table>${b.t.map((r,i)=>`<tr>${r.map(c=>i?`<td>${hl(c)}</td>`:`<th>${hl(c)}</th>`).join('')}</tr>`).join('')}</table></div>`;
+function renderRules(){
+ const q=Q.toLowerCase();let h='',toc='',n=0;
+ P.forEach((p,i)=>{
+  let sh='',st='';
+  p.s.forEach((x,j)=>{
+   if(q&&!flat(x).toLowerCase().includes(q))return;
+   n++;const id=`s${i}_${j}`;
+   st+=`<a data-sc="${id}">${x[0]?x[0]+'. ':''}${esc(x[1])}</a>`;
+   sh+=`<section class="sec" id="${id}"><div class="num">${x[0]||'§'}</div><div><h3>${hl(x[1])}</h3>${x.slice(2).map(blk).join('')}</div></section>`;
+  });
+  if(!sh)return;
+  toc+=`<a class="tp" data-sc="p${i}"><b>${p.r}</b>${esc(p.t)}</a>`+st;
+  h+=`<h2 id="p${i}"><b>${p.r}</b>${hl(p.t)}</h2>`+sh;
+ });
+ $('toc').innerHTML=toc;
+ $('rbody').innerHTML='<p class="sub">Игровая эпоха — 2014 год. Расчётная единица — Лыстык.</p>'+(q?`<p class="sub">Найдено разделов: ${n}</p>`:'')+(n?h:'<p class="empty">Ничего не найдено. Попробуйте другое слово.</p>')+(n&&!q?'<p class="end">Конец свода правил</p>':'');
+}
+
+/* ===== калькуляторы ===== */
+let cur='LYS';
+const fc=(l,c)=>`${nf(l*CUR[c][2])} ${CUR[c][1]}`;
+const money=l=>`${nf(l)} Лыст.`+(cur!=='LYS'?`<small class="sub"> ≈ ${fc(l,cur)}</small>`:'');
+const out=rows=>`<div class="out">${rows.map(r=>`<div><span>${r[0]}</span><b>${money(r[1])}</b></div>`).join('')}</div>`;
+const num=(id,max)=>{let v=Math.floor(parseFloat($(id).value));if(!(v>=0))v=0;if(max!=null&&v>max){v=max;$(id).value=v}return v};
+const ENT=[['Отраслевая фабрика',100000,3],['Гражданский завод',175000,3],['НПЗ',250000,3],['Военный завод',350000,1]];
+const IT=[['lt','Лёгкий танк',80000,0],['mt','Средний танк (ОБТ)',300000,3],['ht','Тяжёлый танк',450000,2],['ifv','БМП',75000,3],['apc','БТР',60000,6],['spg','САУ',85000,2],['art','Артиллерия',45000,4],['mrl','РСЗО',130000,1],['hc','Вертолёт гражданский/грузовой',100000,0],['hm','Вертолёт военный',400000,0],['pc','Самолёт гражданский/грузовой',125000,0],['pm','Самолёт военный',550000,0],['atgm','ПТУР',4500,20],['uav','Разведывательный дрон',12000,5],['fpv','Разведывательный FPV-дрон',2000,5],['mor','Миномёт',5000,10],['trk','Военный грузовой транспорт',25000,10],['mot','Мотоцикл',6000,10]];
+const G=[['Все танки вместе',5,['lt','mt','ht']],['Все вертолёты вместе',1,['hc','hm']],['Все самолёты вместе',1,['pc','pm']]];
+const fld=(id,t,v,max)=>`<label class="fld">${t}<input type="number" id="${id}" min="0"${max!=null?` max="${max}"`:''} step="1" value="${v}"></label>`;
+const curOpts=sel=>Object.entries(CUR).map(([k,c])=>`<option value="${k}"${k===sel?' selected':''}>${c[0]}</option>`).join('');
+function calcHTML(){return `
+ <div class="card"><div class="grid"><label class="fld">Показывать суммы в валюте<select id="cur">${curOpts(cur)}</select></label></div></div>
+ <div class="card"><h3 class="h3">Конвертер валют</h3><div class="grid">${fld('cv','Сумма',1)}<label class="fld">Из валюты<select id="cf">${curOpts('LYS')}</select></label></div><div class="out" id="cvo"></div></div>
+ <div class="card"><h3 class="h3">Доход государства</h3><div class="grid">${fld('i_f','Отраслевые фабрики (до 3)',0,3)}${fld('i_g','Гражданские заводы (до 3)',0,3)}${fld('i_o','НПЗ (до 3)',0,3)}${fld('i_w','Военный завод (до 1)',0,1)}</div><div id="ino"></div><p class="sub">Базовая выплата — 10 000 Лыстыков в час. Расчёт без расходов на армию и без учёта лимита «одно предприятие за 6 часов».</p></div>
+ <div class="card"><h3 class="h3">Содержание техники</h3><div class="grid">${fld('m_p','Стоимость одной единицы, Лыст.',300000)}${fld('m_n','Количество',1)}<label class="fld">Категория<select id="m_c"><option value="0.25" data-w="1">Военная бронетехника — 0,25%</option><option value="0.25" data-w="1">Военная авиация — 0,25%</option><option value="0.10">Гражданская техника — 0,10%</option><option value="0.05">Пехотное оборудование — 0,05%</option></select></label><label class="fld ck"><input type="checkbox" id="m_w">Военное время</label></div><div id="mo"></div><p class="sub">Множитель 1,5 в военное время применяется к военной технике (бронетехника и авиация), п. 16.</p></div>
+ <div class="card"><h3 class="h3">Закупки и лимиты</h3><div class="grid">${fld('tr','Казна, Лыст.',1000000)}</div>
+ <div class="tw"><table><tr><th>Позиция</th><th>Цена</th><th>Лимит</th><th>Количество</th><th>Сумма</th></tr>${IT.map(i=>`<tr><td>${i[1]}</td><td>${nf(i[2])}</td><td>${i[3]||'—'}</td><td><input type="number" id="q_${i[0]}" min="0" step="1" value="0"></td><td id="s_${i[0]}">0</td></tr>`).join('')}</table></div>
+ <p class="sub">Общие лимиты: все танки — 5, все вертолёты — 1, все самолёты — 1. FPV-дроны: 5 на сторону за бой. Остальные лимиты — на 6 часов.</p><div id="bo"></div></div>`}
+function calc(){
+ cur=$('cur').value;
+ const v=num('cv'),l=v/CUR[$('cf').value][2];
+ $('cvo').innerHTML=Object.values(CUR).map(c=>`<div><span>${c[0]}</span><b>${nf(l*c[2])} ${c[1]}</b></div>`).join('');
+ const a=[num('i_f',3),num('i_g',3),num('i_o',3),num('i_w',1)];
+ const ent=a[0]*900+a[1]*1350+a[2]*1800-a[3]*1000,net=10000+ent,cost=a[0]*1e5+a[1]*175e3+a[2]*25e4+a[3]*35e4;
+ $('ino').innerHTML=out([['Доход в час',net],['В сутки (24 начисления)',net*24],['За 7 суток',net*168],['Стоимость построенного',cost]])+(ent>0?`<p class="sub">Предприятия окупятся примерно за ${nf(cost/ent)} ч.</p>`:'');
+ const o=$('m_c').selectedOptions[0],k=($('m_w').checked&&o.dataset.w)?1.5:1,t=num('m_p')*num('m_n')*parseFloat(o.value)/100*k;
+ $('mo').innerHTML=out([['В сутки (24 часа)',t],['За 7 суток',t*7]]);
+ let sum=0,bad=[];const q={};
+ IT.forEach(i=>{const n=num('q_'+i[0]);q[i[0]]=n;sum+=n*i[2];$('s_'+i[0]).textContent=nf(n*i[2]);if(i[3]&&n>i[3])bad.push(`${i[1]}: ${n} при лимите ${i[3]}`)});
+ G.forEach(g=>{const n=g[2].reduce((s,x)=>s+q[x],0);if(n>g[1])bad.push(`${g[0]}: ${n} при лимите ${g[1]}`)});
+ const tr=num('tr');if(sum>tr)bad.push(`Не хватает казны: ${nf(sum-tr)} Лыст.`);
+ $('bo').innerHTML=out([['Стоимость закупки',sum],['Остаток казны',Math.max(tr-sum,0)]])+(bad.length?`<ul class="bad">${bad.map(b=>`<li>${b}</li>`).join('')}</ul>`:(sum?'<p class="good">Лимиты и казна в порядке.</p>':''));
+}
+
+/* ===== экраны ===== */
+const TITLES={home:'Главная',rules:'Свод правил',calc:'Калькуляторы',me:'Моё государство',admin:'Администрация',set:'Настройки'};
+const tile=(go,i,t,d)=>`<button class="tile" data-go="${go}">${ic(i)}<b>${t}</b><span>${d}</span></button>`;
+const seg=(key,opts)=>`<div class="seg">${opts.map(o=>`<button type="button" data-set="${key}" data-val="${o[0]}"${String(SET[key])===String(o[0])?' class="on"':''}>${o[1]}</button>`).join('')}</div>`;
+const VIEWS={
+ home(){
+  const a=S.role==='admin',st=S.st,L=(l)=>money(l);
+  const rows=[['Стартовый капитал',L(1e6)],['Государственный доход в час',L(1e4)],['Курс','1 Лыстык = 15 $, 12 € или 1 500 ₽'],['Одновременные войны','не больше двух'],['Перемирие','от 6 реальных часов'],['После мира','12 реальных часов без нового конфликта'],['Репарации','до 10% казны плательщика'],['Государственный кредит','до 25% казны кредитора, 5% за весь срок, от 1 до 7 суток'],['Крупный перевод','от 100 000 Лыст. или 10% казны: нужно подтверждение']];
+  return `<div class="hello"><h2>${a?'Администрация сервера':'Государство «'+esc(st.name)+'»'}</h2><p class="sub">${a?`Вы вошли как ${esc(S.login)}. Зарегистрировано государств: ${DB.states.length}`:`Правитель: ${esc(st.ruler)}. Форма правления: ${esc(st.gov)}.`}</p></div>
+  <div class="tiles">${tile('rules','book','Свод правил','Тринадцать частей, поиск по тексту')}${tile('calc','calc','Калькуляторы','Доход, содержание техники, закупки и лимиты')}${a?tile('admin','shield','Администрация','Государства, пароли, список для игроков'):tile('me','flag','Моё государство','Цены и лимиты в вашей валюте')}</div>
+  <h3 class="h3">Главное за минуту</h3><div class="tw card card0"><table>${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div>`;
+ },
+ rules(){return '<div class="rules"><nav id="toc"></nav><div id="rbody"></div></div>'},
+ calc:calcHTML,
+ me(){
+  const s=S.st,c=s.cur,two=c!=='LYS';
+  const row=(n,l,lim)=>`<tr><td>${n}</td><td>${nf(l)}</td>${two?`<td>${fc(l,c)}</td>`:''}<td>${lim}</td></tr>`;
+  return `<div class="card"><h3 class="h3">${esc(s.name)}</h3><div class="seg2"><div><span class="sub">Правитель</span>${esc(s.ruler)}</div><div><span class="sub">Форма правления</span>${esc(s.gov)}</div><div><span class="sub">Национальная валюта</span>${CUR[c][0]}</div></div></div>
+  <h3 class="h3">Цены и лимиты${two?' в вашей валюте':''}</h3>
+  <div class="tw card card0"><table><tr><th>Позиция</th><th>Лыстыки</th>${two?`<th>${CUR[c][0]}</th>`:''}<th>Лимит</th></tr>
+  <tr class="hd"><td colspan="${two?4:3}">Предприятия (максимум на государство)</td></tr>${ENT.map(e=>row(e[0],e[1],e[2])).join('')}
+  <tr class="hd"><td colspan="${two?4:3}">Техника и оборудование (лимит на 6 часов)</td></tr>${IT.map(i=>row(i[1],i[2],i[3]||'в общем лимите')).join('')}</table></div>`;
+ },
+ admin(){return `<div class="bar"><button class="btn p" data-act="add">Добавить государство</button><button class="btn" data-act="exp">Сохранить список для игроков</button><button class="btn" data-act="imp">Загрузить список</button></div>
+  <div class="tw card card0">${DB.states.length?`<table><tr><th>Государство</th><th>Правитель</th><th>Форма правления</th><th>Валюта</th><th></th></tr>${DB.states.map(s=>`<tr><td>${esc(s.name)}</td><td>${esc(s.ruler)}</td><td>${esc(s.gov)}</td><td>${CUR[s.cur][0]}</td><td class="acts"><button class="btn" data-act="edit" data-id="${s.id}">Изменить</button> <button class="btn d" data-act="del" data-id="${s.id}">Удалить</button></td></tr>`).join('')}</table>`:'<p class="empty">Государств пока нет. Добавьте первое или загрузите список.</p>'}</div>
+  <p class="sub">Учётные записи администраторов заданы при сборке приложения и меняются только пересборкой.</p>`},
+ set(){return `<div class="card">
+  <div class="set"><div>Тема оформления<div class="sub">Системная повторяет настройку Windows</div></div>${seg('theme',[['system','Системная'],['light','Светлая'],['dark','Тёмная']])}</div>
+  <div class="set"><div>Размер текста</div>${seg('size',[['m','Обычный'],['l','Крупный']])}</div>
+  <div class="set"><div>Анимации<div class="sub">Отклик кнопок и плавные переходы</div></div>${seg('anim',[[true,'Включены'],[false,'Отключены']])}</div></div>
+  <p class="sub">Данные приложения хранятся только на этом компьютере. Версия 2.0.</p>`}
+};
+function go(v){
+ const el=$('view');
+ el.oninput=el.onchange=null;
+ document.querySelectorAll('.nav-i[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+ $('ttl').textContent=TITLES[v];
+ el.innerHTML=`<div class="in">${VIEWS[v]()}</div>`;el.scrollTop=0;
+ if(v==='rules')renderRules();
+ if(v==='calc'){el.oninput=el.onchange=calc;calc()}
+ V=v;
+}
+let V='home';
+
+/* ===== администрирование ===== */
+function dlg(id){
+ const s=id?DB.states.find(x=>x.id===id):null,d=$('dlg');
+ d.innerHTML=`<form id="df"><h3 class="h3" style="margin-top:0">${s?'Изменить государство':'Новое государство'}</h3>
+ <label class="fld">Название государства<input id="d_n" maxlength="60" required value="${s?esc(s.name):''}"></label>
+ <label class="fld">Правитель (глава государства)<input id="d_r" maxlength="60" required value="${s?esc(s.ruler):''}"></label>
+ <label class="fld">Форма правления<select id="d_g">${GOV.map(g=>`<option${s&&s.gov===g?' selected':''}>${g}</option>`).join('')}</select></label>
+ <label class="fld">Национальная валюта<select id="d_c">${curOpts(s?s.cur:'LYS')}</select></label>
+ <label class="fld">${s?'Новый пароль (пусто — не менять)':'Пароль (не короче 6 символов)'}<input id="d_p" autocomplete="off" minlength="6"${s?'':' required'}></label>
+ <p class="err" id="derr"></p><div class="bar end"><button type="button" class="btn" data-act="dx">Отмена</button><button class="btn p">Сохранить</button></div></form>`;
+ d.showModal();
+ $('df').onsubmit=async e=>{
+  e.preventDefault();
+  const n=$('d_n').value.trim(),r=$('d_r').value.trim(),p=$('d_p').value,E=m=>{$('derr').textContent=m};
+  if(n.length<2||r.length<2)return E('Название и правитель: не короче 2 символов.');
+  if(DB.states.some(x=>norm(x.name)===norm(n)&&(!s||x.id!==s.id)))return E('Государство с таким названием уже есть.');
+  if(!s&&p.length<6)return E('Пароль должен быть не короче 6 символов.');
+  const o=s||{id:'s'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)};
+  Object.assign(o,{name:n,ruler:r,gov:$('d_g').value,cur:$('d_c').value});
+  if(p){const sl=newSalt();o.salt=b64(sl);o.hash=await hash(p,sl)}
+  if(!s)DB.states.push(o);
+  save();d.close();go('admin');toast(s?'Изменения сохранены':'Государство добавлено');
+ };
+}
+function exportList(){
+ const b=new Blob([JSON.stringify({app:'rp-rules',v:1,states:DB.states},null,1)],{type:'application/json'}),a=document.createElement('a');
+ a.href=URL.createObjectURL(b);a.download='rp-states.json';document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(a.href),1500);toast('Список сохранён в папку «Загрузки»');
+}
+$('imp').onchange=async e=>{
+ const f=e.target.files[0];e.target.value='';if(!f)return;
+ try{
+  const d=JSON.parse(await f.text()),ok=s=>s&&typeof s.name==='string'&&typeof s.ruler==='string'&&s.name.length<=60&&s.ruler.length<=60&&CUR[s.cur]&&typeof s.gov==='string'&&s.gov.length<=60&&/^[A-Za-z0-9+\/=]{16,64}$/.test(s.salt||'')&&/^[A-Za-z0-9+\/=]{16,64}$/.test(s.hash||'');
+  const list=(d.states||[]).filter(ok);if(!list.length)throw 0;
+  list.forEach(s=>{const o={id:s.id&&/^[\w-]{1,30}$/.test(s.id)?s.id:'s'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:s.name,ruler:s.ruler,gov:s.gov,cur:s.cur,salt:s.salt,hash:s.hash},i=DB.states.findIndex(x=>norm(x.name)===norm(o.name));i<0?DB.states.push(o):DB.states[i]=o});
+  save();toast(`Загружено государств: ${list.length}`);
+  if(S&&V==='admin')go('admin');else if(!S)loginUI();
+ }catch(x){toast('Файл не подходит: нужен список государств из этого приложения')}
+};
+
+/* ===== события ===== */
+document.addEventListener('click',e=>{
+ const g=e.target.closest('[data-go]'),n=e.target.closest('.nav-i[data-v]'),a=e.target.closest('[data-act]'),sc=e.target.closest('[data-sc]'),st=e.target.closest('[data-set]'),m=e.target.closest('#lseg [data-m]');
+ if(g)go(g.dataset.go);
+ else if(n)go(n.dataset.v);
+ else if(sc){const t=$(sc.dataset.sc);if(t)t.scrollIntoView({block:'start'})}
+ else if(st){const k=st.dataset.set,v=st.dataset.val;SET[k]=k==='anim'?v==='true':v;saveSet();go('set')}
+ else if(m){mode=m.dataset.m;loginUI()}
+ else if(a){
+  const id=a.dataset.id;
+  switch(a.dataset.act){
+   case'out':logout();break;
+   case'add':dlg();break;
+   case'edit':dlg(id);break;
+   case'dx':$('dlg').close();break;
+   case'exp':exportList();break;
+   case'imp':$('imp').click();break;
+   case'eye':{const i=$(a.dataset.for);i.type=i.type==='password'?'text':'password';a.textContent=i.type==='password'?'Показать':'Скрыть';break}
+   case'del':
+    if(a.dataset.armed){DB.states=DB.states.filter(s=>s.id!==id);save();go('admin');toast('Государство удалено')}
+    else{a.dataset.armed=1;a.textContent='Точно удалить?';setTimeout(()=>{if(a.isConnected){delete a.dataset.armed;a.textContent='Удалить'}},3000)}
+    break;
+  }
+ }
+});
+document.addEventListener('pointerdown',e=>{
+ const b=e.target.closest('.btn,.nav-i,.seg button');
+ if(!b||b.disabled||document.documentElement.dataset.anim==='off')return;
+ const r=b.getBoundingClientRect(),d=Math.max(r.width,r.height)*2,s=document.createElement('span');
+ s.className='rip';s.style.cssText=`width:${d}px;height:${d}px;left:${e.clientX-r.left-d/2}px;top:${e.clientY-r.top-d/2}px`;
+ b.appendChild(s);s.addEventListener('animationend',()=>s.remove());
+});
+$('q').oninput=e=>{Q=e.target.value.trim();V==='rules'?renderRules():go('rules')};
+$('llogo').innerHTML=ic('shield');
+applySet();loginUI();
+</script>
+</body>
+</html>
+
+@echo off
+rem Opens RP_Rules.html as an app window (Microsoft Edge). Same data folder as RP_Rules.exe.
+set "D=%LOCALAPPDATA%\RPRules"
+if not exist "%D%" mkdir "%D%"
+copy /y "%~dp0RP_Rules.html" "%D%\RP_Rules.html" >nul
+set "P=%D:\=/%/RP_Rules.html"
+start "" msedge --app="file:///%P%" --user-data-dir="%D%\profile" --window-size=1280,860 --no-first-run --no-default-browser-check
+
+@echo off
+setlocal
+cd /d "%~dp0"
+echo Folder: %CD%
+echo.
+if not exist "RP_Rules.html" goto nohtml
+set "CSC=%WINDIR%\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
+if not exist "%CSC%" set "CSC=%WINDIR%\Microsoft.NET\Framework\v4.0.30319\csc.exe"
+if not exist "%CSC%" goto nocsc
+echo Preparing launcher source...
+>"_Launcher.cs" echo using System;
+>>"_Launcher.cs" echo using System.Diagnostics;
+>>"_Launcher.cs" echo using System.IO;
+>>"_Launcher.cs" echo using System.Reflection;
+>>"_Launcher.cs" echo using System.Windows.Forms;
+>>"_Launcher.cs" echo.
+>>"_Launcher.cs" echo [assembly: AssemblyTitle("\u0412\u043e\u0435\u043d\u043d\u043e-\u043f\u043e\u043b\u0438\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0435 RP")]
+>>"_Launcher.cs" echo [assembly: AssemblyProduct("RP Rules")]
+>>"_Launcher.cs" echo [assembly: AssemblyVersion("2.0.0.0")]
+>>"_Launcher.cs" echo.
+>>"_Launcher.cs" echo static class Launcher
+>>"_Launcher.cs" echo {
+>>"_Launcher.cs" echo     [STAThread]
+>>"_Launcher.cs" echo     static void Main()
+>>"_Launcher.cs" echo     {
+>>"_Launcher.cs" echo         try
+>>"_Launcher.cs" echo         {
+>>"_Launcher.cs" echo             string root = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "RPRules");
+>>"_Launcher.cs" echo             Directory.CreateDirectory(root);
+>>"_Launcher.cs" echo             string html = Path.Combine(root, "RP_Rules.html");
+>>"_Launcher.cs" echo             using (Stream src = Assembly.GetExecutingAssembly().GetManifestResourceStream("RP_Rules.html"))
+>>"_Launcher.cs" echo             using (FileStream dst = new FileStream(html, FileMode.Create, FileAccess.Write))
+>>"_Launcher.cs" echo             {
+>>"_Launcher.cs" echo                 src.CopyTo(dst);
+>>"_Launcher.cs" echo             }
+>>"_Launcher.cs" echo             string edge = FindEdge();
+>>"_Launcher.cs" echo             if (edge == null)
+>>"_Launcher.cs" echo             {
+>>"_Launcher.cs" echo                 Process.Start(new ProcessStartInfo(html) { UseShellExecute = true });
+>>"_Launcher.cs" echo                 return;
+>>"_Launcher.cs" echo             }
+>>"_Launcher.cs" echo             string args = "--app=\"" + new Uri(html).AbsoluteUri + "\"" + " --user-data-dir=\"" + Path.Combine(root, "profile") + "\"" + " --window-size=1280,860 --no-first-run --no-default-browser-check";
+>>"_Launcher.cs" echo             Process.Start(new ProcessStartInfo(edge, args) { UseShellExecute = false });
+>>"_Launcher.cs" echo         }
+>>"_Launcher.cs" echo         catch (Exception ex)
+>>"_Launcher.cs" echo         {
+>>"_Launcher.cs" echo             MessageBox.Show("\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0437\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u044c \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435:\n" + ex.Message, "RP Rules", MessageBoxButtons.OK, MessageBoxIcon.Error);
+>>"_Launcher.cs" echo         }
+>>"_Launcher.cs" echo     }
+>>"_Launcher.cs" echo.
+>>"_Launcher.cs" echo     static string FindEdge()
+>>"_Launcher.cs" echo     {
+>>"_Launcher.cs" echo         string[] dirs = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) };
+>>"_Launcher.cs" echo         foreach (string d in dirs)
+>>"_Launcher.cs" echo         {
+>>"_Launcher.cs" echo             string p = Path.Combine(d, @"Microsoft\Edge\Application\msedge.exe");
+>>"_Launcher.cs" echo             if (File.Exists(p)) return p;
+>>"_Launcher.cs" echo         }
+>>"_Launcher.cs" echo         return null;
+>>"_Launcher.cs" echo     }
+>>"_Launcher.cs" echo }
+set "ICO="
+if exist "app.ico" set "ICO=/win32icon:app.ico"
+echo Building RP_Rules.exe ...
+"%CSC%" /nologo /target:winexe /optimize+ /out:RP_Rules.exe %ICO% /reference:System.Windows.Forms.dll /resource:RP_Rules.html,RP_Rules.html _Launcher.cs
+if errorlevel 1 goto failed
+del "_Launcher.cs" >nul 2>&1
+echo.
+echo Done. RP_Rules.exe is ready in this folder.
+pause
+exit /b 0
+
+:nohtml
+echo ERROR: RP_Rules.html was not found next to Build_EXE.bat.
+echo Put both files in the SAME folder. Turn on file extensions in Explorer
+echo to check that the name is exactly RP_Rules.html and not RP_Rules.html.txt
+echo.
+echo Files in this folder:
+dir /b
+pause
+exit /b 1
+
+:nocsc
+echo ERROR: built-in C# compiler was not found: %CSC%
+pause
+exit /b 1
+
+:failed
+echo.
+echo Build failed. Copy the text above and send it to the developer.
+pause
+exit /b 1
